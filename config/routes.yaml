@@ -1,3 +1,8 @@
 #index:
 #    path: /
 #    controller: App\Controller\DefaultController::index
+
+notification_send:
+    path: /notification/send
+    controller: App\NotificationPublisher\UserInterface\API\NotificationController::sendNotification
+    methods: [POST]
