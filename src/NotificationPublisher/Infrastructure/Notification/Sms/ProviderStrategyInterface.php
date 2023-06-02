@@ -2,7 +2,9 @@
 
 namespace App\NotificationPublisher\Infrastructure\Notification\Sms;
 
-interface ProviderStrategyInterface extends \App\NotificationPublisher\Infrastructure\Notification\ProviderStrategyInterface
+use \App\NotificationPublisher\Infrastructure\Notification\ProviderStrategyInterface as BaseProviderStrategyInterface;
+
+interface ProviderStrategyInterface extends BaseProviderStrategyInterface
 {
     public function next(?string $lastProviderName, int $retries): ProviderEnum;
 
