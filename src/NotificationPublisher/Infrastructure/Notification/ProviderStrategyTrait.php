@@ -2,6 +2,8 @@
 
 namespace App\NotificationPublisher\Infrastructure\Notification;
 
+use App\NotificationPublisher\Infrastructure\Notification\Exception\AllProvidersNotWorkingException;
+
 trait ProviderStrategyTrait
 {
     public function __construct(
@@ -24,6 +26,6 @@ trait ProviderStrategyTrait
                 $seenLastProvider = true;
             }
         }
-        throw new \Exception('Provider not found');
+        throw new AllProvidersNotWorkingException;
     }
 }

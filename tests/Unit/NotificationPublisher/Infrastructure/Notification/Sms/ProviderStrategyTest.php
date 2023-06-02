@@ -2,6 +2,7 @@
 
 namespace App\NotificationPublisher\Infrastructure\Notification\Sms;
 
+use App\NotificationPublisher\Infrastructure\Notification\Exception\AllProvidersNotWorkingException;
 use PHPUnit\Framework\TestCase;
 
 class EmailProviderTest extends TestCase
@@ -65,7 +66,7 @@ class EmailProviderTest extends TestCase
         $lastProviderName = "twilio";
         $retries = 4;
 
-        $this->expectException(\Exception::class);
+        $this->expectException(AllProvidersNotWorkingException::class);
 
         $this->provider->next($lastProviderName, $retries);
 

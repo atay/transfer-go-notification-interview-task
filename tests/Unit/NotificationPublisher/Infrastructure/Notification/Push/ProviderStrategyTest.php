@@ -2,6 +2,7 @@
 
 namespace App\NotificationPublisher\Infrastructure\Notification\Push;
 
+use App\NotificationPublisher\Infrastructure\Notification\Exception\AllProvidersNotWorkingException;
 use PHPUnit\Framework\TestCase;
 
 class ProviderTest extends TestCase
@@ -65,7 +66,7 @@ class ProviderTest extends TestCase
         $lastProviderName = "pushy";
         $retries = 4;
 
-        $this->expectException(\Exception::class);
+        $this->expectException(AllProvidersNotWorkingException::class);
 
         $this->provider->next($lastProviderName, $retries);
 
