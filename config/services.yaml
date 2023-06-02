@@ -40,6 +40,13 @@ services:
                 - '@App\NotificationPublisher\Infrastructure\Notification\Email\Provider\AwsSesEmailProvider'
                 - '@App\NotificationPublisher\Infrastructure\Notification\Email\Provider\MailgunEmailProvider'
 
+    App\NotificationPublisher\Infrastructure\Notification\Email\Provider\MailgunEmailProvider:
+        arguments:
+            $apiKey: '%env(MAILGUN_API_KEY)%'
+            $domain: '%env(MAILGUN_DOMAIN)%'
+            $from: '%env(MAILGUN_FROM)%'
+            $subject: '%env(MAILGUN_SUBJECT)%'
+
     App\NotificationPublisher\Infrastructure\Notification\Sms\ProviderFactory:
         arguments:
             $providers:
