@@ -1,0 +1,10 @@
+POST localhost/notification/send
+Content-Type: application/json
+
+{
+    "receiverId": "test@atay.pl",
+    "message": "Some message",
+    "types": [
+        "email"
+    ]
+}
