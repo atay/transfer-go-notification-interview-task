@@ -5,6 +5,9 @@
 # https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
 parameters:
 
+imports:
+    - { resource: 'notifications.yaml' }
+
 services:
     # default configuration for services in *this* file
     _defaults:
@@ -22,3 +25,47 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+
+    App\NotificationPublisher\Infrastructure\Notification\TypeProviderFactory:
+        arguments:
+            $factories:
+                - '@App\NotificationPublisher\Infrastructure\Notification\Email\ProviderFactory'
+                - '@App\NotificationPublisher\Infrastructure\Notification\Sms\ProviderFactory'
+                - '@App\NotificationPublisher\Infrastructure\Notification\Push\ProviderFactory'
+                
+
+    App\NotificationPublisher\Infrastructure\Notification\Email\ProviderFactory:
+        arguments:
+            $providers:
+                - '@App\NotificationPublisher\Infrastructure\Notification\Email\Provider\AwsSesEmailProvider'
+                - '@App\NotificationPublisher\Infrastructure\Notification\Email\Provider\MailgunEmailProvider'
+
+    App\NotificationPublisher\Infrastructure\Notification\Sms\ProviderFactory:
+        arguments:
+            $providers:
+                - '@App\NotificationPublisher\Infrastructure\Notification\Sms\Provider\TwilioSmsProvider'
+
+    App\NotificationPublisher\Infrastructure\Notification\Push\ProviderFactory:
+        arguments:
+            $providers:
+                - '@App\NotificationPublisher\Infrastructure\Notification\Push\Provider\PushyPushProvider'
+    
+    
+    App\NotificationPublisher\Infrastructure\Notification\TypeProviderStrategyBuilder:
+        arguments:
+            $strategies:
+                - '@App\NotificationPublisher\Infrastructure\Notification\Email\ProviderStrategy'
+                - '@App\NotificationPublisher\Infrastructure\Notification\Sms\ProviderStrategy'
+                - '@App\NotificationPublisher\Infrastructure\Notification\Push\ProviderStrategy'
+
+    App\NotificationPublisher\Infrastructure\Notification\Email\ProviderStrategy:
+        arguments:
+            $config: '%notifications%'
+
+    App\NotificationPublisher\Infrastructure\Notification\Sms\ProviderStrategy:
+        arguments:
+            $config: '%notifications%'
+
+    App\NotificationPublisher\Infrastructure\Notification\Push\ProviderStrategy:
+        arguments:
+            $config: '%notifications%'
