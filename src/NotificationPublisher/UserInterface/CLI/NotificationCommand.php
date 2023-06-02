@@ -3,6 +3,7 @@
 namespace App\NotificationPublisher\UserInterface\CLI;
 
 use App\NotificationPublisher\Application\Service\NotificationService;
+use App\NotificationPublisher\Domain\Notification\NotificationType;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -25,17 +26,26 @@ class NotificationCommand extends Command
             ->setHelp('This command allows you to send a notification to a user')
             ->addArgument('receiverId', InputArgument::REQUIRED, 'The id of the user to send the notification to')
             ->addArgument('message', InputArgument::REQUIRED, 'The message to send')
-            ->addArgument('type', InputArgument::REQUIRED, 'The type of notification')
+            ->addArgument('types', InputArgument::REQUIRED, 'The csv type list of notification (email, sms, push)')
         ;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $this->notificationService->sendNotification(
-            $input->getArgument('receiverId'),
-            $input->getArgument('message'),
-            $input->getArgument('type')
-        );
+
+        $types = array_unique(explode(",", $input->getArgument('types')));
+        foreach ($types as $type) {
+            if (!NotificationType::tryFrom($type)) {
+                throw new \Exception('Invalid type: ' . $type);
+            }
+        }
+        foreach ($types as $type) {
+            $this->notificationService->sendNotification(
+                $input->getArgument('receiverId'),
+                $input->getArgument('message'),
+                NotificationType::tryFrom($type)
+            );
+        }
 
         $output->writeln('Notification sent');
         return Command::SUCCESS;

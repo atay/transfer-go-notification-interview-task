@@ -16,12 +16,12 @@ class NotificationService implements NotificationServiceInterface
         $this->bus = $bus;
     }
 
-    public function sendNotification(string $receiverId, string $message, string $type)
+    public function sendNotification(string $receiverId, string $message, NotificationType $type)
     {
         $command = new SendNotificationCommand(
             $receiverId,
             $message,
-            NotificationType::from($type),
+            $type,
         );
         $this->bus->dispatch($command);
     }
