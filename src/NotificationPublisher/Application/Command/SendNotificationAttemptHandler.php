@@ -3,6 +3,8 @@
 namespace App\NotificationPublisher\Application\Command;
 
 use App\NotificationPublisher\Application\Notification\NotificationAttempt;
+use App\NotificationPublisher\Infrastructure\Notification\Exception\AllProvidersNotWorkingException;
+use App\NotificationPublisher\Infrastructure\Notification\Exception\FailedToSendMessage;
 use App\NotificationPublisher\Infrastructure\Notification\TypeProviderFactory;
 use App\NotificationPublisher\Infrastructure\Notification\TypeProviderStrategyBuilder;
 use Psr\Log\LoggerInterface;
@@ -34,10 +36,14 @@ class SendNotificationAttemptHandler implements MessageHandlerInterface
         try {
             $provider->send($notification);
             $this->logger->info('Notification sent successfully');
-        } catch (\Exception $e) {
+        } catch (FailedToSendMessage $e) {
             $attempt->failAttempt($provider);
             $this->bus->dispatch($attempt);
             $this->logger->error('Failed to send notification', ['exception' => $e]);
+        } catch (AllProvidersNotWorkingException $ex) {
+            $this->logger->error('All providers are not working', ['exception' => $ex]);
+            // 2DO send it back to the queue with delay to try later
+            throw $ex;
         }
     }
 
