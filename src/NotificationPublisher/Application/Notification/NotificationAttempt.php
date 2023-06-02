@@ -9,14 +9,12 @@ use App\NotificationPublisher\Infrastructure\Notification\ProviderInterface;
 class NotificationAttempt
 {
     private Notification $notification;
-    private int $failedTries;
+    private int $failedTries = 0;
     private ?string $lastProviderName = null;
 
     public function __construct(Notification $notification)
     {
         $this->notification = $notification;
-        $this->failedTries = 0;
-        $this->lastProvider = null;
     }
 
     public function getNotification(): Notification

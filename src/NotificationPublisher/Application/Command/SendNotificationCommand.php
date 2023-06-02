@@ -10,11 +10,11 @@ class SendNotificationCommand
     private string $message;
     private NotificationType $type;
 
-    public function __construct(int $receiverId, string $message, NotificationType $channels)
+    public function __construct(string $receiverId, string $message, NotificationType $type)
     {
         $this->receiverId = $receiverId;
         $this->message = $message;
-        $this->type = $channels;
+        $this->type = $type;
     }
 
     public function getReceiverId(): string
