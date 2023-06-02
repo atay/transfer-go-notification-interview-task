@@ -1,6 +1,6 @@
 <?php
 
-namespace App\NotificationPublisher\Infrastructure\Notification;
+namespace App\NotificationPublisher\Infrastructure\Notification\Exception;
 
 class FailedToSendMessage extends \Exception
 {

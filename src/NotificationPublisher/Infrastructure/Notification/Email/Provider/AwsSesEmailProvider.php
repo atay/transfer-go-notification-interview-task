@@ -5,7 +5,7 @@ namespace App\NotificationPublisher\Infrastructure\Notification\Email\Provider;
 use App\NotificationPublisher\Domain\Notification\Notification;
 use App\NotificationPublisher\Infrastructure\Notification\Email\ProviderEnum;
 use App\NotificationPublisher\Infrastructure\Notification\Email\ProviderInterface;
-use App\NotificationPublisher\Infrastructure\Notification\FailedToSendMessage;
+use App\NotificationPublisher\Infrastructure\Notification\Exception\FailedToSendMessage;
 use Psr\Log\LoggerInterface;
 
 class AwsSesEmailProvider implements ProviderInterface
